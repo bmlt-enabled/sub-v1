@@ -4,7 +4,7 @@ Allows you to send out mass text messages to a list of subscribers.
 
 ### Installation
 
-1) Clone the repo
+1) Download zip of the repository.
 2) Run `composer install`
 3) Create a database
 4) Run `database.sql` on the database.
