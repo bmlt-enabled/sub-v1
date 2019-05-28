@@ -34,14 +34,15 @@ if (trim(strtoupper($body)) == strtoupper($subscribe_keyword)) {
     $message = "You have been unsubscribed, sorry to see you go.";
 
     $db->close();
-} else if (trim(strtoupper($body)) == "BROADCAST") {
+} else if (strpos(trim(strtoupper($body)), "BROADCAST") === 0) {
     $db = new Database();
     $db->query("SELECT `id` FROM `subscribers` WHERE `contact` = :contact AND is_admin = 1");
     $db->bind(":contact", $contact);
     $found = $db->single();
 
     if (count($found) == 1) {
-        $db->query("SELECT `contact` FROM `subscribers` WHERE `contact` <> :contact");
+        $db->query("SELECT `contact` FROM `subscribers`");
+        $db->bind(":contact", $contact);
         $contacts = $db->resultset();
 
         $message = preg_replace("/BROADCAST/i", " ", $body);
