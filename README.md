@@ -13,7 +13,7 @@ Allows you to send out mass text messages to a list of subscribers.
 7) Add the twilio info in `config.php`.
 8) Upload everything to a server for hosting.
 9) Provision a new phone number.
-10) Point the webhook to your https://your-web-server/subscribe.php.
+10) Point the webhook to your https://your-web-server/subscribe.php.  HTTP POST should be the method used.
 11) `$subscribe_keyword` and `$unsubscribe_keyword` are the trigger words for your subscribers to be added and removed.
 12) Once your admin (or broadcaster, the person who is sending out the notifications) has been enrolled in the database, you can set the `is_admin` field to `1`.
 
