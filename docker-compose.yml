@@ -1,0 +1,22 @@
+version: '3.1'
+
+services:
+  sub:
+    build: .
+    restart: always
+    ports:
+      - 3300:80
+    volumes:
+      - .:/var/www/html/
+    environment:
+      ENVIRONMENT: dev
+  sub_db:
+    image: mysql:5.5
+    restart: always
+    ports:
+      - 3706:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: sub_root_password
+      MYSQL_DATABASE: sub
+      MYSQL_USER: sub_user
+      MYSQL_PASSWORD: sub_password
