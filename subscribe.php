@@ -46,9 +46,29 @@ if (trim(strtoupper($body)) == strtoupper($subscribe_keyword)) {
         $contacts = $db->resultset();
 
         $message = preg_replace("/BROADCAST/i", " ", $body);
+        $moreMedia = true;
+        $mediaIndex = 0;
+        $mediaUrls = [];
+
+        while ($moreMedia) {
+            if (isset($_POST['MediaUrl' . $mediaIndex])) {
+                array_push($mediaUrls, $_POST['MediaUrl' . $mediaIndex]);
+                $mediaIndex++;
+            } else {
+                $moreMedia = false;
+            }
+        }
 
         foreach ($contacts as $contact_number) {
-            $GLOBALS['twilioClient']->messages->create($contact_number, array("from" => $_REQUEST['To'], "body" => $message));
+            $payload = array("from" => $_REQUEST['To'], "body" => $message);
+
+            if (count($mediaUrls) > 0) {
+                foreach ($mediaUrls as $mediaUrl) {
+                    $payload["mediaUrl"] = $mediaUrl;
+                }
+            }
+
+            $GLOBALS['twilioClient']->messages->create($contact_number, $payload);
         }
     }
 
