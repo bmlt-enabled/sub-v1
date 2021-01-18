@@ -42,7 +42,6 @@ if (trim(strtoupper($body)) == strtoupper($subscribe_keyword)) {
 
     if ($found && count($found) == 1) {
         $db->query("SELECT `contact` FROM `subscribers`");
-        $db->bind(":contact", $contact);
         $contacts = $db->resultset();
 
         $message = preg_replace("/BROADCAST/i", " ", $body);
