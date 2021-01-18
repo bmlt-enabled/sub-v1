@@ -41,7 +41,8 @@ if (trim(strtoupper($body)) == strtoupper($subscribe_keyword)) {
     $found = $db->single();
 
     if ($found && count($found) == 1) {
-        $db->query("SELECT `contact` FROM `subscribers`");
+        $db->query("SELECT `contact` FROM `subscribers` WHERE `contact` != :contact");
+        $db->bind(":contact", $contact);
         $contacts = $db->resultset();
 
         $message = preg_replace("/BROADCAST/i", " ", $body);
@@ -70,7 +71,7 @@ if (trim(strtoupper($body)) == strtoupper($subscribe_keyword)) {
             $GLOBALS['twilioClient']->messages->create($contact_number, $payload);
         }
     } else {
-        $message = "denied";
+        $message = "You are not allowed to broadcast to this list.";
     }
     $db->close();
 } else {
