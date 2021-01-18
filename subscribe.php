@@ -41,7 +41,8 @@ if (trim(strtoupper($body)) == strtoupper($subscribe_keyword)) {
     $found = $db->single();
 
     if ($found && count($found) == 1) {
-        $db->query("SELECT `contact` FROM `subscribers` ");
+        $db->query("SELECT `contact` FROM `subscribers` WHERE `contact` != :contact");
+        $db->bind(":contact", $contact);
         $contacts = $db->resultset();
 
         $message = preg_replace("/BROADCAST/i", " ", $body);
@@ -59,17 +60,16 @@ if (trim(strtoupper($body)) == strtoupper($subscribe_keyword)) {
         }
 
         foreach ($contacts as $contact_number) {
-			if(strcmp($contact_number,$contact)) {
-				$payload = array("from" => $_REQUEST['To'], "body" => $message);
+            $payload = array("from" => $_REQUEST['To'], "body" => $message);
 
-				if (count($mediaUrls) > 0) {
-					foreach ($mediaUrls as $mediaUrl) {
-						$payload["mediaUrl"] = $mediaUrl;
-					}
-				}
+            if (count($mediaUrls) > 0) {
+                foreach ($mediaUrls as $mediaUrl) {
+                    $payload["mediaUrl"] = $mediaUrl;
+                }
+            }
 
-				$GLOBALS['twilioClient']->messages->create($contact_number, $payload);
-			}
+            $GLOBALS['twilioClient']->messages->create($contact_number, $payload);
+
         }
     } else {
         $message = "You are not allowed to broadcast to this list.";
