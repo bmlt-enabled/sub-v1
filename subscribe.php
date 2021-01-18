@@ -69,7 +69,6 @@ if (trim(strtoupper($body)) == strtoupper($subscribe_keyword)) {
             }
 
             $GLOBALS['twilioClient']->messages->create($contact_number, $payload);
-
         }
     } else {
         $message = "You are not allowed to broadcast to this list.";
