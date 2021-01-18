@@ -21,3 +21,28 @@ Allows you to send out mass text messages to a list of subscribers.
 An admin can send an SMS with `broadcast` and then some message.  That message will be sent to all subscribers.
 
 Lots of room for improvement.
+
+### Local MySQL Container for Development
+#### Start the mysql container
+```
+docker run --name sub-mysql \
+  -e MYSQL_ROOT_PASSWORD=sub \
+  -e MYSQL_DATABASE=sub \
+  -e MYSQL_USER=sub \
+  -e MYSQL_PASSWORD=sub \
+  -p 3306:3306 \
+  -d mysql:8
+```
+
+#### Create the schema
+```
+docker run -i --network=host mysql mysql --host=0.0.0.0 --user=sub --password=sub sub < database.sql
+```
+
+#### Modify config.php
+```
+static $mysql_hostname = "0.0.0.0";
+static $mysql_username = "sub";
+static $mysql_password = "sub";
+static $mysql_database = "sub";
+```
