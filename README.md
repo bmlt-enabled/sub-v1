@@ -39,6 +39,11 @@ docker run --name sub-mysql \
 docker run -i --network=host mysql mysql --host=0.0.0.0 --user=sub --password=sub sub < database.sql
 ```
 
+#### Connect to the db from the command line
+```
+docker run -it --network=host mysql mysql --host=0.0.0.0 --user=sub --password=sub sub
+```
+
 #### Modify config.php
 ```
 static $mysql_hostname = "0.0.0.0";
