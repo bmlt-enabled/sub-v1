@@ -40,7 +40,7 @@ if (trim(strtoupper($body)) == strtoupper($subscribe_keyword)) {
     $db->bind(":contact", $contact);
     $found = $db->single();
 
-    if (count($found) == 1) {
+    if ($found && count($found) == 1) {
         $db->query("SELECT `contact` FROM `subscribers`");
         $db->bind(":contact", $contact);
         $contacts = $db->resultset();
@@ -70,8 +70,9 @@ if (trim(strtoupper($body)) == strtoupper($subscribe_keyword)) {
 
             $GLOBALS['twilioClient']->messages->create($contact_number, $payload);
         }
+    } else {
+        $message = "denied";
     }
-
     $db->close();
 } else {
     $message = "You must send a message with the word \"$subscribe_keyword\" in it to get subscribed.";
