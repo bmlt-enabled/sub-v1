@@ -68,5 +68,5 @@ jobs:
         if: github.ref_type == 'tag'
         with:
           artifacts: ${{ env.ARTIFACT_PATH }}
-#          bodyFile: "changelog.txt"
+          bodyFile: "changelog.txt"
           prerelease: ${{ env.RELEASE_TYPE }}
