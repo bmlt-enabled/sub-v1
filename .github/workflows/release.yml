@@ -57,9 +57,9 @@ jobs:
       - name: Generate Release Notes 📝
         if: github.ref_type == 'tag'
         run: |
-#          curl -LO https://raw.githubusercontent.com/bmlt-enabled/release-notes-tool/master/gh-release-notes.sh
-#          chmod +x gh-release-notes.sh
-#          ./gh-release-notes.sh readme.txt "wp"
+          curl -LO https://raw.githubusercontent.com/bmlt-enabled/release-notes-tool/master/gh-release-notes.sh
+          chmod +x gh-release-notes.sh
+          ./gh-release-notes.sh CHANGELOG.md "##"
           RELEASE_TYPE=$(if [[ "$GITHUB_REF_NAME" =~ "beta" ]]; then echo "true"; else echo "false"; fi)
           echo "RELEASE_TYPE=${RELEASE_TYPE}" >> $GITHUB_ENV
 
