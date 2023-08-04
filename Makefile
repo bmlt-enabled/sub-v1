@@ -4,8 +4,13 @@ BUILD_DIR := $(or $(BUILD_DIR),build)
 VENDOR_AUTOLOAD := endor/autoload.php
 ZIP_FILE := build/sub.zip
 
-ifeq ($(DEV)x, x)
-	COMPOSER_ARGS := --no-dev
+ifeq ($(CI)x, x)
+	COMPOSER_ARGS :=
+else
+	COMPOSER_ARGS := --classmap-authoritative
+	ifeq ($(DEV)x, x)
+		COMPOSER_ARGS := $(COMPOSER_ARGS) --no-dev
+	endif
 endif
 
 help:  ## Print the help documentation
