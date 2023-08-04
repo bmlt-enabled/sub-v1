@@ -7,7 +7,7 @@ ZIP_FILE := build/sub.zip
 ifeq ($(CI)x, x)
 	COMPOSER_ARGS :=
 else
-	COMPOSER_ARGS := --classmap-authoritative
+	COMPOSER_ARGS :=
 	ifeq ($(DEV)x, x)
 		COMPOSER_ARGS := $(COMPOSER_ARGS) --no-dev
 	endif
