@@ -63,10 +63,11 @@ jobs:
           RELEASE_TYPE=$(if [[ "$GITHUB_REF_NAME" =~ "beta" ]]; then echo "true"; else echo "false"; fi)
           echo "RELEASE_TYPE=${RELEASE_TYPE}" >> $GITHUB_ENV
 
+
       - name: Create Release 🎉
         uses: ncipollo/release-action@v1.11.1
         if: github.ref_type == 'tag'
         with:
           artifacts: ${{ env.ARTIFACT_PATH }}
-#          bodyFile: "changelog.txt"
+          bodyFile: "changelog.txt"
           prerelease: ${{ env.RELEASE_TYPE }}
