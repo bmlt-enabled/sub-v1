@@ -5,7 +5,7 @@ VENDOR_AUTOLOAD := endor/autoload.php
 ZIP_FILE := build/sub.zip
 
 ifeq ($(DEV)x, x)
-	COMPOSER_ARGS := $(COMPOSER_ARGS) --no-dev
+	COMPOSER_ARGS := --no-dev
 endif
 
 help:  ## Print the help documentation
