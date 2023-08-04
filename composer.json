@@ -1,5 +1,17 @@
 {
+  "name": "bmlt-enabled/sub",
+  "description": "This is a sub. It's orange.",
+  "type": "project",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "dgershman"
+    }
+  ],
   "require": {
     "twilio/sdk": "^5.29"
+  },
+  "require-dev": {
+    "squizlabs/php_codesniffer": "3.*"
   }
 }

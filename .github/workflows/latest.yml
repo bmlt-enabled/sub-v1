@@ -1,0 +1,74 @@
+name: 'latest'
+
+on:
+  push:
+    branches: [ 'main' ]
+
+jobs:
+  lint:
+    runs-on: ubuntu-22.04
+    env:
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+    steps:
+      - name: Check out code 🛒
+        uses: actions/checkout@v3
+
+      - name: Setup PHP 🐫
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.2
+
+      - name: PHPCS checker 🧹
+        id: php-codesniffer
+        run: make lint
+
+      - uses: act10ns/slack@v1
+        with:
+          status: ${{ job.status }}
+          steps: ${{ toJson(steps) }}
+          channel: '#sub'
+        if: failure()
+
+  deploy:
+    runs-on: ubuntu-22.04
+    permissions:
+      id-token: write
+      contents: write
+    env:
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      S3_BUCKET: archives.bmlt.app
+      S3_KEY: sub
+      BUILD_DIR: build
+      DIST_DIR_S3: dist/s3
+      PLUGIN: "sub"
+    needs: [ lint ]
+    steps:
+      - name: Check out code 🛒
+        uses: actions/checkout@v3
+        id: code-checkout
+
+      - name: Prepare to deploy 🔧
+        run: |
+          export FILENAME=${PLUGIN}-build-${GITHUB_RUN_NUMBER}-${GITHUB_SHA}
+          export ZIP_FILENAME=$FILENAME.zip
+          echo "ZIP_FILENAME=${ZIP_FILENAME}" >> $GITHUB_ENV
+          make build
+          mkdir -p ${DIST_DIR_S3} && cp ${BUILD_DIR}/${ZIP_FILENAME} ${DIST_DIR_S3}/${ZIP_FILENAME}
+
+      - name: configure aws credentials 🪪
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/github-actions/gh-ci-s3-artifact
+          role-session-name: gh-actions-${{ env.PLUGIN }}
+          aws-region: us-east-1
+
+      - name: copy artifact to s3 🪣
+        run: |
+          aws s3 cp $DIST_DIR_S3/$ZIP_FILENAME s3://$S3_BUCKET/$S3_KEY/$ZIP_FILENAME
+
+      - uses: act10ns/slack@v1
+        with:
+          status: ${{ job.status }}
+          steps: ${{ toJson(steps) }}
+          channel: '#sub'
+        if: failure()

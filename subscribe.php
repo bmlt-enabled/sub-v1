@@ -25,7 +25,6 @@ if (trim(strtoupper($body)) == strtoupper($subscribe_keyword)) {
     }
 
     $db->close();
-
 } else if (trim(strtoupper($body)) == strtoupper($unsubscribe_keyword)) {
     $db = new Database();
     $db->query("DELETE FROM `subscribers` WHERE `contact` = :contact");

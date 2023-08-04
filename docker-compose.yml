@@ -11,12 +11,12 @@ services:
     environment:
       ENVIRONMENT: dev
   sub_db:
-    image: mysql:5.5
+    image: mariadb:10.11
     restart: always
     ports:
       - 3706:3306
     environment:
-      MYSQL_ROOT_PASSWORD: sub_root_password
-      MYSQL_DATABASE: sub
-      MYSQL_USER: sub_user
-      MYSQL_PASSWORD: sub_password
+      MARIADB_ROOT_PASSWORD: sub_root_password
+      MARIADB_DATABASE: sub
+      MARIADB_USER: sub_user
+      MARIADB_PASSWORD: sub_password

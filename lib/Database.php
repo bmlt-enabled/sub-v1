@@ -5,6 +5,7 @@ define("DB_USER", $GLOBALS['mysql_username']);
 define("DB_PASS", $GLOBALS['mysql_password']);
 define("DB_NAME", $GLOBALS['mysql_database']);
 
+// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Database
 {
     private $host      = DB_HOST;
@@ -24,8 +25,7 @@ class Database
         );
         try {
             $this->dbh = new PDO($dsn, $this->user, $this->pass, $options);
-        }
-        catch (PDOException $e) {
+        } catch (PDOException $e) {
             $this->error = $e->getMessage();
             throw $e;
         }
