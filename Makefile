@@ -4,7 +4,7 @@ BUILD_DIR := $(or $(BUILD_DIR),build)
 VENDOR_AUTOLOAD := endor/autoload.php
 ZIP_FILE := build/sub.zip
 
-ifeq ($(PROD)x, x)
+ifeq ($(CI)x, x)
 	COMPOSER_ARGS := --prefer-dist --no-progress
 else
 	COMPOSER_ARGS := --no-dev
